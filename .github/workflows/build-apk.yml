@@ -30,7 +30,7 @@ jobs:
       - name: Login to EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx expo login --token "$EXPO_TOKEN"
+        run: npx eas login --token "$EXPO_TOKEN"
 
       - name: Build APK with EAS
         run: |
