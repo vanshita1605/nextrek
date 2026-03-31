@@ -25,12 +25,12 @@ jobs:
           npm install
 
       - name: Install eas-cli
-        run: npm install -g eas-cli@latest
+        run: npm install -g @expo/cli eas-cli@latest
 
       - name: Login to EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas login --token "$EXPO_TOKEN"
+        run: expo login --token "$EXPO_TOKEN"
 
       - name: Build APK with EAS
         run: |
