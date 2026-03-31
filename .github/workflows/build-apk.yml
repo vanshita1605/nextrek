@@ -30,12 +30,12 @@ jobs:
       - name: Login to EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: expo login --token "$EXPO_TOKEN"
+        run: npx expo login --token "$EXPO_TOKEN"
 
       - name: Build APK with EAS
         run: |
           cd mobile/nextrek
-          eas build --platform android --profile preview --non-interactive
+          npx eas build --platform android --profile preview --non-interactive
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
