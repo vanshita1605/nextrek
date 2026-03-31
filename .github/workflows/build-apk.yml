@@ -27,12 +27,9 @@ jobs:
       - name: Install eas-cli
         run: npm install -g @expo/cli eas-cli@latest
 
-      - name: Login to EAS
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx eas login --token "$EXPO_TOKEN"
-
       - name: Build APK with EAS
+        env:
+          EAS_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           cd mobile/nextrek
           npx eas build --platform android --profile preview --non-interactive
