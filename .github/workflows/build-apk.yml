@@ -25,7 +25,7 @@ jobs:
           npm install
 
       - name: Install eas-cli
-        run: npm install -g eas-cli
+        run: npm install -g @expo/eas-cli
 
       - name: Login to EAS
         env:
