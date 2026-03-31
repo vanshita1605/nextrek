@@ -2,44 +2,43 @@ name: Build APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: npm
 
-    - name: Install dependencies
-      run: |
-        cd mobile/nextrek
-        npm install
+      - name: Install dependencies
+        run: |
+          cd mobile/nextrek
+          npm install
 
-    - name: Setup Expo CLI
-      run: npm install -g @expo/cli
+      - name: Install eas-cli
+        run: npm install -g eas-cli
 
-    - name: Build APK
-      run: |
-        cd mobile/nextrek
-        expo build:android --type apk --no-publish --no-wait
-      env:
-        EXPO_CLI_USERNAME: ${{ secrets.EXPO_CLI_USERNAME }}
-        EXPO_CLI_PASSWORD: ${{ secrets.EXPO_CLI_PASSWORD }}
+      - name: Login to EAS
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: eas login --token "$EXPO_TOKEN"
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
-      with:
-        name: apk-build
-        path: mobile/nextrek/*.apk
+      - name: Build APK with EAS
+        run: |
+          cd mobile/nextrek
+          eas build --platform android --profile preview --non-interactive
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk-build
+          path: mobile/nextrek/eas-build-artifacts/**/*.apk
